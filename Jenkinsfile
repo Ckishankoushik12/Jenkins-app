@@ -46,6 +46,7 @@ pipeline {
             }
             steps {
                 sh '''
+                    npm install
                     npm install serve
                     serve -s build &
                     sleep 10
