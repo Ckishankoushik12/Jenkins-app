@@ -47,14 +47,26 @@ pipeline {
             }
             steps {
                 sh '''
-                    npm ci
-                    npm run build
                     npm install serve
                     serve -s build &
                     npx playwright test --reporter=html
                 '''
             }
-        }   
+        }
+        stage('Deploy') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
+            steps {
+                sh '''
+                    npm install netlify-cli@20.1.1
+                    node_modules/.bin/netlify --version
+                '''
+            }
+        }  
     }
 
     post {
